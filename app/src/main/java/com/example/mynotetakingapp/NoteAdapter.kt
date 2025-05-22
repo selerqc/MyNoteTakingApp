@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class NoteAdapter(
     private val notes: List<String>,
-    private val onItemClick: (Int) -> Unit
+    private val onItemClick: (Int) -> Unit,
+
 ) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -1,84 +1,76 @@
 package com.example.mynotetakingapp
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Button
-import android.widget.EditText
+import org.json.JSONArray
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var editTextNote: EditText
-    private lateinit var buttonAddNote: Button
-    private lateinit var recyclerView: RecyclerView
-    private val noteList = mutableListOf<Note>()
-    private lateinit var noteAdapter: NoteAdapter
-    private var noteIdCounter = 0
-
-    companion object {
-        const val EDIT_NOTE_REQUEST = 1
-        const val EXTRA_NOTE_ID = "extra_note_id"
-        const val EXTRA_NOTE_TEXT = "extra_note_text"
-    }
+    private lateinit var notes: MutableList<String>
+    private lateinit var adapter: NoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        editTextNote = findViewById(R.id.editTextNote)
-        buttonAddNote = findViewById(R.id.buttonAddNote)
-        recyclerView = findViewById(R.id.recyclerView)
+        val sharedPreferences = getSharedPreferences("MyNotesPrefs", Context.MODE_PRIVATE)
+        notes = loadNotes(sharedPreferences)
 
-        noteAdapter = NoteAdapter(noteList,
-            onClick = { note -> editNote(note) },
-            onLongClick = { note -> deleteNote(note) })
+        val editTextNote = findViewById<EditText>(R.id.editTextNote)
+        val buttonAddNote = findViewById<Button>(R.id.buttonAddNote)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
-        recyclerView.adapter = noteAdapter
+        adapter = NoteAdapter(notes) { position ->
+            val intent = Intent(this, EditNoteActivity::class.java)
+            intent.putExtra("note", notes[position])
+            intent.putExtra("position", position)
+            startActivityForResult(intent, 1)
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
         buttonAddNote.setOnClickListener {
-            val noteText = editTextNote.text.toString()
-            if (noteText.isNotBlank()) {
-                val note = Note(noteIdCounter++, noteText)
-                noteList.add(0, note)
-                noteAdapter.notifyItemInserted(0)
+            val note = editTextNote.text.toString()
+            if (note.isNotBlank()) {
+                notes.add(note)
+                saveNotes(sharedPreferences, notes)
+                adapter.notifyItemInserted(notes.size - 1)
                 editTextNote.text.clear()
-                recyclerView.scrollToPosition(0)
             }
-        }
-    }
-
-    private fun editNote(note: Note) {
-        val intent = Intent(this, EditNoteActivity::class.java).apply {
-            putExtra(EXTRA_NOTE_ID, note.id)
-            putExtra(EXTRA_NOTE_TEXT, note.text)
-        }
-        startActivityForResult(intent, EDIT_NOTE_REQUEST)
-    }
-
-    private fun deleteNote(note: Note) {
-        val position = noteList.indexOfFirst { it.id == note.id }
-        if (position != -1) {
-            noteList.removeAt(position)
-            noteAdapter.notifyItemRemoved(position)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == EDIT_NOTE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            val id = data.getIntExtra(EXTRA_NOTE_ID, -1)
-            val updatedText = data.getStringExtra(EXTRA_NOTE_TEXT) ?: return
-
-            val index = noteList.indexOfFirst { it.id == id }
-            if (index != -1) {
-                noteList[index].text = updatedText
-                noteAdapter.notifyItemChanged(index)
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            val updatedNote = data?.getStringExtra("updatedNote")
+            val position = data?.getIntExtra("position", -1) ?: -1
+            if (updatedNote != null && position != -1) {
+                notes[position] = updatedNote
+                saveNotes(getSharedPreferences("MyNotesPrefs", Context.MODE_PRIVATE), notes)
+                adapter.notifyItemChanged(position)
             }
         }
+    }
+
+    private fun saveNotes(sharedPreferences: android.content.SharedPreferences, notes: List<String>) {
+        val json = JSONArray(notes).toString()
+        sharedPreferences.edit().putString("notes", json).apply()
+    }
+
+    private fun loadNotes(sharedPreferences: android.content.SharedPreferences): MutableList<String> {
+        val json = sharedPreferences.getString("notes", "[]")
+        val jsonArray = JSONArray(json)
+        val list = mutableListOf<String>()
+        for (i in 0 until jsonArray.length()) {
+            list.add(jsonArray.getString(i))
+        }
+        return list
     }
 }

@@ -6,23 +6,19 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editTextNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Edit note"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
+        android:hint="Edit your note"
         android:background="@drawable/edittext_background"
-        android:layout_marginBottom="16dp"/>
+        android:textSize="16sp" />
 
     <Button
-        android:id="@+id/buttonSave"
+        android:id="@+id/buttonSaveNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save Changes"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
+        android:text="Save"
         android:backgroundTint="@color/purple_500"
-        android:padding="12dp" />
+        android:textColor="@android:color/white"
+        android:layout_marginTop="12dp"/>
 </LinearLayout>

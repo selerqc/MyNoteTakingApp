@@ -3,38 +3,36 @@ package com.example.mynotetakingapp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class NoteAdapter(
-    private val notes: List<Note>,
-    private val onClick: (Note) -> Unit,
-    private val onLongClick: (Note) -> Unit
+    private val notes: List<String>,
+    private val onItemClick: (Int) -> Unit
 ) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewNote: TextView = itemView.findViewById(R.id.textViewNote)
+        val textView: TextView = itemView.findViewById(R.id.textViewNote)
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick(adapterPosition)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_note, parent, false)
-        return NoteViewHolder(itemView)
+        return NoteViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        val note = notes[position]
-        holder.textViewNote.text = note.text
-
-        holder.itemView.setOnClickListener {
-            onClick(note)
-        }
-
-        holder.itemView.setOnLongClickListener {
-            onLongClick(note)
-            true
-        }
+        holder.textView.text = notes[position]
+        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_in)
+        holder.itemView.startAnimation(animation)
     }
 
-    override fun getItemCount() = notes.size
+    override fun getItemCount(): Int = notes.size
 }

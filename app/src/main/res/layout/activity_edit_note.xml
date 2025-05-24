@@ -1,24 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="20dp"
+    android:gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FAFAFA">
 
-    <EditText
-        android:id="@+id/editTextNote"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Edit your note"
-        android:background="@drawable/edittext_background"
-        android:textSize="16sp" />
+        android:text="Edit Your Note" />
 
-    <Button
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <EditText
+            android:id="@+id/editTextNote"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:hint="Edit your note"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:textSize="16sp"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:maxLines="6" />
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonSaveNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save"
-        android:backgroundTint="@color/purple_500"
+        android:textAllCaps="false"
+        android:textSize="16sp"
         android:textColor="@android:color/white"
-        android:layout_marginTop="12dp"/>
+        app:cornerRadius="8dp"
+        android:backgroundTint="@color/purple_500"
+        android:icon="@drawable/ic_save"
+   />
 </LinearLayout>
+

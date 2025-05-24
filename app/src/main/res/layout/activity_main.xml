@@ -7,18 +7,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editTextNote"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Write a note"
-        android:padding="12dp"
-        android:background="@drawable/edittext_background"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
-    <Button
+        <EditText
+            android:id="@+id/editTextNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write a note"
+            android:padding="12dp"
+            android:background="@android:color/transparent"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:inputType="textMultiLine"
+            android:maxLines="5" />
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonAddNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +36,12 @@
         android:textColor="@android:color/white"
         android:backgroundTint="@color/purple_500"
         android:padding="12dp"
-        android:layout_marginBottom="8dp" />
+        app:cornerRadius="8dp"
+        app:icon="@drawable/ic_save"
+        app:iconTint="@android:color/white"
+        app:iconPadding="8dp"
+        app:iconGravity="textStart"
+        android:layout_marginBottom="12dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

@@ -17,6 +17,16 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sample Title"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
             android:id="@+id/textViewNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -7,6 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Search notes..."
+        android:iconifiedByDefault="false"
+        android:layout_marginBottom="12dp" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,24 +22,42 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
-        <EditText
-            android:id="@+id/editTextNote"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Write a note"
-            android:padding="12dp"
-            android:background="@android:color/transparent"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:inputType="textMultiLine"
-            android:maxLines="5" />
+            android:padding="8dp">
+
+            <EditText
+                android:id="@+id/editTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:background="@android:color/transparent"
+                android:inputType="textCapSentences"
+                android:layout_marginBottom="4dp" />
+
+            <EditText
+                android:id="@+id/editTextNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write a note"
+                android:padding="12dp"
+                android:background="@android:color/transparent"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:inputType="textMultiLine"
+                android:maxLines="5" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonAddNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Note"
+        android:text="@string/add_note"
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/purple_500"

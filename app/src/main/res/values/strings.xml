@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">My Note Taking App</string>
+    <string name="add_note">Add Note</string>
+    <string name="title">Title</string>
+    <string name="write_a_note">Write a note</string>
     <string-array name="note_categories">
         <item>Personal</item>
         <item>Work</item>
